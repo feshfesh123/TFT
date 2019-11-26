@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using IdentityModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -23,7 +24,17 @@ namespace TFTB.Identity.Controllers
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             var user = new User() { Email = model.Email, UserName = model.Email };
-            
+
+            user.Claims.Add(new IdentityUserClaim<string>() { 
+                ClaimType = JwtClaimTypes.GivenName,
+                ClaimValue = model.Fullname
+            });
+
+            user.Claims.Add(new IdentityUserClaim<string>()
+            {
+                ClaimType = "money",
+                ClaimValue = "0"
+            });
             var result = await userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)

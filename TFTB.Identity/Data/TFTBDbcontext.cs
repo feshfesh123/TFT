@@ -14,6 +14,19 @@ namespace TFTB.Identity.Data
         {
      
         }
+        protected override void OnModelCreating(ModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<User>(users => 
+            {
+                users.HasMany(x => x.Claims)
+                    .WithOne()
+                    .HasForeignKey(x => x.UserId)
+                    .IsRequired()
+                    .OnDelete(DeleteBehavior.Cascade);
+            });
+        }
     }
 }
     

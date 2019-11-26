@@ -37,7 +37,7 @@ namespace TFTB.Identity.Configuration
                     {
                         new Secret("secret".Sha256())
                     },
-                    AllowedScopes = { "api1" }
+                    AllowedScopes = { "api1", "openid", "profile"}
                 }
             };
         }

@@ -35,6 +35,7 @@ namespace TFTB.Identity.Controllers
                 ClaimType = "money",
                 ClaimValue = "0"
             });
+
             var result = await userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)

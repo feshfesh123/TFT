@@ -26,10 +26,11 @@ namespace TFTB.Resource
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddAuthentication("Bearer")
-                .AddIdentityServerAuthentication(options =>
+                .AddJwtBearer("Bearer", options =>
                 {
                     options.Authority = Configuration["Identity:Authority"];
                     options.RequireHttpsMetadata = false;
+                    options.Audience = "api1";
                 });
 
             services.AddControllers();
@@ -43,11 +44,13 @@ namespace TFTB.Resource
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseAuthentication();
+            
 
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -25,21 +25,15 @@ namespace TFTB.Identity.Controllers
         {
             var user = new User() { Email = model.Email, UserName = model.Email };
 
-            user.Claims.Add(new IdentityUserClaim<string>() { 
-                ClaimType = JwtClaimTypes.GivenName,
-                ClaimValue = model.Fullname
-            });
-
-            user.Claims.Add(new IdentityUserClaim<string>()
-            {
-                ClaimType = "money",
-                ClaimValue = "0"
-            });
-
             var result = await userManager.CreateAsync(user, model.Password);
 
             if (result.Succeeded)
+            {
+                await userManager.AddClaimAsync(user, new System.Security.Claims.Claim("name", model.Fullname));
+                await userManager.AddClaimAsync(user, new System.Security.Claims.Claim("money", "0"));
                 return Ok();
+            }
+                
             else
                 return BadRequest();
         }
